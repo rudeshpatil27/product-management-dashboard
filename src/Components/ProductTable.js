@@ -1,6 +1,8 @@
 import React, { useState } from "react";
+import TableContainer from "@mui/material/TableContainer";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
+import Paper from "@mui/material/Paper";
 import TableCell from "@mui/material/TableCell";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
@@ -16,7 +18,7 @@ const ProductTable = ({ products, setProducts, search, onEdit }) => {
   const [toast, setToast] = useState({
     open: false,
     message: "",
-    severity: "success"
+    severity: "success",
   });
 
   const handleDelete = async (id) => {
@@ -34,13 +36,13 @@ const ProductTable = ({ products, setProducts, search, onEdit }) => {
       setToast({
         open: true,
         message: "Product deleted successfully",
-        severity: "success"
+        severity: "success",
       });
     } catch (error) {
       setToast({
         open: true,
         message: "Failed to delete product",
-        severity: "error"
+        severity: "error",
       });
     }
   };
@@ -51,44 +53,50 @@ const ProductTable = ({ products, setProducts, search, onEdit }) => {
 
   return (
     <>
-      <Table>
-        <TableHead>
-          <TableRow sx={{ backgroundColor: "#f0f0f0" }}>
-            <TableCell><b>Title</b></TableCell>
-            <TableCell><b>Price</b></TableCell>
-            <TableCell><b>Category</b></TableCell>
-            <TableCell align="center"><b>Action</b></TableCell>
-          </TableRow>
-        </TableHead>
-
-        <TableBody>
-          {filteredProducts.map((product) => (
-            <TableRow key={product.id} hover>
-              <TableCell>{product.title}</TableCell>
-              <TableCell>${product.price}</TableCell>
+      <TableContainer component={Paper} sx={{ overflowX: "auto" }}>
+        <Table size="small">
+          <TableHead>
+            <TableRow sx={{ backgroundColor: "#f0f0f0" }}>
               <TableCell>
-                <Chip label={product.category} size="small" />
+                <b>Title</b>
+              </TableCell>
+              <TableCell>
+                <b>Price</b>
+              </TableCell>
+              <TableCell>
+                <b>Category</b>
               </TableCell>
               <TableCell align="center">
-                <IconButton
-                  color="primary"
-                  onClick={() => onEdit(product)}
-                >
-                  <EditIcon />
-                </IconButton>
-
-                <IconButton
-                  color="error"
-                  onClick={() => handleDelete(product.id)}
-                >
-                  <DeleteIcon />
-                </IconButton>
+                <b>Action</b>
               </TableCell>
             </TableRow>
-          ))}
-        </TableBody>
-      </Table>
+          </TableHead>
 
+          <TableBody>
+            {filteredProducts.map((product) => (
+              <TableRow key={product.id} hover>
+                <TableCell>{product.title}</TableCell>
+                <TableCell>${product.price}</TableCell>
+                <TableCell>
+                  <Chip label={product.category} size="small" />
+                </TableCell>
+                <TableCell align="center">
+                  <IconButton color="primary" onClick={() => onEdit(product)}>
+                    <EditIcon />
+                  </IconButton>
+
+                  <IconButton
+                    color="error"
+                    onClick={() => handleDelete(product.id)}
+                  >
+                    <DeleteIcon />
+                  </IconButton>
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
       <Snackbar
         open={toast.open}
         autoHideDuration={3000}

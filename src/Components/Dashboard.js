@@ -13,73 +13,79 @@ import { getProducts } from "../Services/ServicesApi";
 import ProductForm from "./Add/ProductForm";
 
 const Dashboard = () => {
-    const [products, setProducts] = useState([]);
-    const [openForm, setOpenForm] = useState(false);
-    const [editingProduct, setEditingProduct] = useState(null);
-    const [search, setSearch] = useState("");
+  const [products, setProducts] = useState([]);
+  const [openForm, setOpenForm] = useState(false);
+  const [editingProduct, setEditingProduct] = useState(null);
+  const [search, setSearch] = useState("");
 
-    useEffect(() => {
-        fetchProducts();
-    }, []);
+  useEffect(() => {
+    fetchProducts();
+  }, []);
 
-    const fetchProducts = async () => {
-        const res = await getProducts();
-        setProducts(res.data);
-    };
+  const fetchProducts = async () => {
+    const res = await getProducts();
+    setProducts(res.data);
+  };
 
-    const handleEdit = (product) => {
-        setEditingProduct(product);
-        setOpenForm(true);
-    };
+  const handleEdit = (product) => {
+    setEditingProduct(product);
+    setOpenForm(true);
+  };
 
-    const handleCloseForm = () => {
-        setOpenForm(false);
-        setEditingProduct(null);
-    };
+  const handleCloseForm = () => {
+    setOpenForm(false);
+    setEditingProduct(null);
+  };
 
-    return (
-        <Box sx={{ minHeight: "100vh", backgroundColor: "#f4f6f8", py: 4 }}>
-            <Container maxWidth="lg">
+  return (
+    <Box sx={{ minHeight: "100vh", backgroundColor: "#f4f6f8", py: 4 }}>
+      <Container maxWidth="lg">
+        <Stack
+          direction={{ xs: "column", sm: "row" }}
+          justifyContent="space-between"
+          alignItems={{ xs: "stretch", sm: "center" }}
+          spacing={2}
+          mb={3}
+        >
+          <Typography
+            variant="h4"
+            fontWeight="bold"
+            textAlign={{ xs: "center", sm: "left" }}
+          >
+            Product Dashboard
+          </Typography>
 
-                <Stack
-                    direction="row"
-                    justifyContent="space-between"
-                    alignItems="center"
-                    mb={3}
-                >
-                    <Typography variant="h4" fontWeight="bold">
-                        Product Dashboard
-                    </Typography>
+          <Button
+            variant="contained"
+            startIcon={<AddIcon />}
+            fullWidth={true}
+            sx={{ maxWidth: { sm: "200px" }, alignSelf: "center" }}
+            onClick={() => setOpenForm(true)}
+          >
+            Add Product
+          </Button>
+        </Stack>
 
-                    <Button
-                        variant="contained"
-                        startIcon={<AddIcon />}
-                        onClick={() => setOpenForm(true)}
-                    >
-                        Add Product
-                    </Button>
-                </Stack>
-
-                <Card>
-                    <CardContent>
-                        <SearchBar search={search} setSearch={setSearch} />
-                        <ProductTable
-                            products={products}
-                            setProducts={setProducts}
-                            search={search}
-                            onEdit={handleEdit}
-                        />
-                    </CardContent>
-                </Card>
-                <ProductForm
-                    open={openForm}
-                    handleClose={handleCloseForm}
-                    setProducts={setProducts}
-                    editingProduct={editingProduct}
-                />
-            </Container>
-        </Box>
-    );
+        <Card>
+          <CardContent>
+            <SearchBar search={search} setSearch={setSearch} />
+            <ProductTable
+              products={products}
+              setProducts={setProducts}
+              search={search}
+              onEdit={handleEdit}
+            />
+          </CardContent>
+        </Card>
+        <ProductForm
+          open={openForm}
+          handleClose={handleCloseForm}
+          setProducts={setProducts}
+          editingProduct={editingProduct}
+        />
+      </Container>
+    </Box>
+  );
 };
 
 export default Dashboard;
